@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Posted by {{ post.user }} on {{ post.date }}
+                with {{ post.subject }}
+                subject</h6>
+            <p class="card-text">{{ post.text|linebreaks }}</p>
+
+            {% if request.user.is_superuser or request.user == post.user %}
+                <div class="d-flex align-items-center justify-content-start">
+                    <a href="{% url 'post_edit' pk=post.pk %}" class="btn btn-primary">Edit post</a>
+                    <a href="{% url 'post_delete' pk=post.pk %}" class="btn btn-secondary ml-1">Delete post</a>
+                </div>
+            {% endif %}
+
+        </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+        <h3 class="mt-4">Comments</h3>
+        <a href="{% url 'comment_create' pk=post.pk %}" class="btn btn-primary">Add Comment</a>
+    </div>
+    {% for comment in post.comments.all %}
+        <div class="card mt-2">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">{{ comment.user }} on {{ comment.date }}</h6>
+                <p class="card-text">{{ comment.text|linebreaks }}</p>
+                {% if request.user.is_superuser or request.user == comment.user %}
+                    <a href="{% url 'comment_delete' post_pk=post.pk comment_pk=comment.pk %}"
+                       class="card-link">Delete comment</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

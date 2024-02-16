@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        .dropdown-menu {
+            top: auto !important;
+            left: auto !important;
+            width: 40% !important;
+            padding-left: .75rem;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h3>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Post</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $('.subject-auto-complete').autoComplete({minLength: 1});
+        });
+    </script>
+{% endblock %}
