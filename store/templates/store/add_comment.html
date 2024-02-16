@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Add Comment</h2>
+<form method="post" class="mt-3">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="content">Comment</label>
+        <textarea class="form-control" id="content" name="content" rows="3"></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endblock %}

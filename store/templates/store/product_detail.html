@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">{{ product.description }}</p>
+            <p class="card-text">Price: {{ product.price }}</p>
+        </div>
+    </div>
+
+    <h3>Comments</h3>
+    {% for comment in product.comment_set.all %}
+        <div class="card mt-2">
+            <div class="card-body">
+                {{ comment.content }}
+            </div>
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+
+    <a href="{% url 'add-comment' product.id %}" class="btn btn-primary mt-3">Add Comment</a>
+{% endblock %}
