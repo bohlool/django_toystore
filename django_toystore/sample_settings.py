@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 ADMIN_URL = ''
 
 # Quick-start development settings - unsuitable for production
@@ -10,3 +12,8 @@ SECRET_KEY = ''
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
