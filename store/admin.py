@@ -6,29 +6,44 @@ from store.models import Category, ImageGallery, Product, VideoGallery, Comment
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
+    search_fields = ('name',)
 
 
-class CommentInline(admin.StackedInline):
+class CommentInline(admin.TabularInline):
     model = Comment
+    extra = 1
+
+
+class ImageGalleryInline(admin.TabularInline):
+    model = ImageGallery
+    extra = 1
+
+
+class VideoGalleryInline(admin.TabularInline):
+    model = VideoGallery
     extra = 1
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    inlines = [CommentInline]
-    list_display = ('name', 'price', 'category')
+    inlines = [CommentInline, ImageGalleryInline, VideoGalleryInline]
+    list_display = ('id', 'name', 'price', 'category')
+    search_fields = ('name', 'category', 'description')
+    list_filter = ('category',)
 
 
 @admin.register(ImageGallery)
 class ImageGalleryAdmin(admin.ModelAdmin):
-    list_display = ('product', 'image')
+    list_display = ('id', 'product', 'image')
 
 
 @admin.register(VideoGallery)
 class VideoGalleryAdmin(admin.ModelAdmin):
-    list_display = ('product', 'video')
+    list_display = ('id', 'product', 'video')
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('product', 'user', 'content')
+    list_display = ('id', 'product', 'user', 'content')
+    search_fields = ('content',)
+    list_filter = ('product', 'user__username')
