@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
 from django.db import models
 
@@ -10,7 +11,7 @@ class Post(models.Model):
     subject = models.CharField(max_length=200)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-    text = models.TextField()
+    text = RichTextField()
 
     class Meta:
         ordering = ['-pk']
@@ -22,7 +23,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_comments')
-    text = models.TextField()
+    text = RichTextField()
     date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
