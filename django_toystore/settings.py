@@ -32,7 +32,9 @@ INSTALLED_APPS = [
     'ckeditor',
 
     "store.apps.StoreConfig",
-    "blog.apps.BlogConfig"
+    "blog.apps.BlogConfig",
+    "cart.apps.CartConfig",
+    "order.apps.OrderConfig"
 ]
 
 MIDDLEWARE = [
