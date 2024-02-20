@@ -5,11 +5,17 @@ from django.db import models
 User = get_user_model()
 
 
-# Create your models here.
+class Subject(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     title = models.CharField(max_length=200)
-    subject = models.CharField(max_length=200)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     date = models.DateTimeField(auto_now_add=True)
     text = RichTextField()
 

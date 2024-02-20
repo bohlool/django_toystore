@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .forms import PostForm, CommentForm
-from .models import Post, Comment
+from .models import Post, Comment, Subject
 from .permissions import IsOwnerOrSuperuser
 from .serializers import PostSerializer, CommentSerializer
 
@@ -82,14 +82,6 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'blog/confirm_delete.html'
 
 
-def subject_auto_complete(request):
-    q = request.GET.get('q')
-    if q:
-        data = Post.objects.filter(subject__startswith=q).values_list('subject', flat=True).order_by('subject')
-        return JsonResponse(list(set(data)), safe=False)
-    return HttpResponse("No cookies")
-
-
 class PostsBySubjectView(ListView):
     model = Post
     template_name = 'blog/posts_by_subject.html'
@@ -97,6 +89,11 @@ class PostsBySubjectView(ListView):
 
     def get_queryset(self):
         return Post.objects.filter(subject=self.kwargs['subject'])
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['subject'] = get_object_or_404(Subject, pk=self.kwargs['subject'])
+        return context
 
 
 class CommentCreateView(LoginRequiredMixin, CreateView):
