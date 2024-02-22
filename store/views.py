@@ -7,7 +7,7 @@ from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.response import Response
 
 from blog.permissions import IsOwnerOrSuperuser
-from store.models import Category, Product, Comment
+from store.models import Category, Product, Comment, ImageGallery, VideoGallery
 from store.serializers import CategorySerializer, ProductSerializer, ImageGallerySerializer, CommentSerializer, \
     VideoGallerySerializer
 
@@ -37,6 +37,18 @@ class ProductViewSet(viewsets.ModelViewSet):
     def videos(self, request, *args, **kwargs):
         product = self.get_object()
         return Response(VideoGallerySerializer(product.videos.all(), many=True).data)
+
+
+class ImageGalleryViewSet(viewsets.ModelViewSet):
+    queryset = ImageGallery.objects.all()
+    serializer_class = ImageGallerySerializer
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
+
+
+class VideoGalleryViewSet(viewsets.ModelViewSet):
+    queryset = VideoGallery.objects.all()
+    serializer_class = VideoGallerySerializer
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
