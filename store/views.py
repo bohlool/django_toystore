@@ -2,8 +2,12 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
+from rest_framework.response import Response
 
-from store.models import Category, Product, ImageGallery, VideoGallery, Comment
+from blog.permissions import IsOwnerOrSuperuser
+from store.models import Category, Product, Comment
 from store.serializers import CategorySerializer, ProductSerializer, ImageGallerySerializer, CommentSerializer, \
     VideoGallerySerializer
 
@@ -11,26 +15,38 @@ from store.serializers import CategorySerializer, ProductSerializer, ImageGaller
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
 
 class ProductViewSet(viewsets.ModelViewSet):
-    queryset = Product.objects.all()
+    queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductSerializer
+    permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
+    @action(detail=True)
+    def comments(self, request, *args, **kwargs):
+        product = self.get_object()
+        return Response(CommentSerializer(product.comments.filter(is_confirmed=True), many=True).data)
 
-class ImageGalleryViewSet(viewsets.ModelViewSet):
-    queryset = ImageGallery.objects.all()
-    serializer_class = ImageGallerySerializer
+    @action(detail=True)
+    def images(self, request, *args, **kwargs):
+        product = self.get_object()
+        return Response(ImageGallerySerializer(product.images.all(), many=True).data)
 
-
-class VideoGalleryViewSet(viewsets.ModelViewSet):
-    queryset = VideoGallery.objects.all()
-    serializer_class = VideoGallerySerializer
+    @action(detail=True)
+    def videos(self, request, *args, **kwargs):
+        product = self.get_object()
+        return Response(VideoGallerySerializer(product.videos.all(), many=True).data)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.filter(is_confirmed=True)
     serializer_class = CommentSerializer
+    permission_classes = [IsOwnerOrSuperuser]
+    search_fields = ['user__username', 'text']
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 class CategoryListView(ListView):
@@ -58,6 +74,13 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = 'store/product_detail.html'
     context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.object.comments.filter(is_confirmed=True)
+        context['images'] = self.object.images.all()
+        context['videos'] = self.object.videos.all()
+        return context
 
 
 class CommentCreateView(CreateView):

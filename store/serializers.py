@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from store.models import Category, Product, ImageGallery, VideoGallery, Comment
@@ -27,7 +28,15 @@ class VideoGallerySerializer(serializers.ModelSerializer):
         fields = ('id', 'product', 'video')
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ['id', 'username']
+
+
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = Comment
         fields = ('id', 'product', 'user', 'content')

@@ -55,6 +55,7 @@ class Comment(TimeStampedModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='product_comments')
     content = models.TextField()
+    is_confirmed = models.BooleanField(default=False)
 
     def __str__(self):
         return self.content
