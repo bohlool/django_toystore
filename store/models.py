@@ -1,45 +1,58 @@
 from ckeditor.fields import RichTextField
 from django.contrib.auth import get_user_model
+from django.core.validators import FileExtensionValidator
 from django.db import models
 
 User = get_user_model()
 
 
-class Category(models.Model):
+class TimeStampedModel(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class Category(TimeStampedModel):
     name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
 
-class Product(models.Model):
+class Product(TimeStampedModel):
     name = models.CharField(max_length=255)
     description = RichTextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    category = models.ForeignKey(Category, on_delete=models.PROTECT)
+    category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
+    is_active = models.BooleanField(default=True)
+    featured_image = models.FileField(upload_to='products/img/featured/')
 
     def __str__(self):
         return self.name
 
 
-class ImageGallery(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    image = models.FileField(upload_to='products/img/')
+class ImageGallery(TimeStampedModel):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
+    image = models.FileField(upload_to='products/img/',
+                             validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg'])])
 
     def __str__(self):
         return self.image.name
 
 
-class VideoGallery(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    video = models.FileField(upload_to='products/video/')
+class VideoGallery(TimeStampedModel):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='videos')
+    video = models.FileField(upload_to='products/video/',
+                             validators=[FileExtensionValidator(allowed_extensions=['mp4'])])
 
     def __str__(self):
         return self.video.name
 
 
-class Comment(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+class Comment(TimeStampedModel):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='comments')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='product_comments')
     content = models.TextField()
 
