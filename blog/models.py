@@ -31,6 +31,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='blog_comments')
     text = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    is_confirmed = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['-pk']

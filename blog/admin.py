@@ -13,7 +13,7 @@ class SubjectAdmin(admin.ModelAdmin):
 class CommentInlineAdmin(admin.TabularInline):
     model = Comment
     extra = 1
-    fields = ('user', 'date', 'text')
+    fields = ('user', 'date', 'text', 'is_confirmed')
     readonly_fields = ('date',)
 
 
@@ -29,7 +29,7 @@ class PostAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'post', 'user', 'date', 'text')
+    list_display = ('id', 'post', 'user', 'date', 'text', 'is_confirmed')
     list_display_links = ('id', 'post')
     search_fields = ('text',)
     list_filter = ('user', 'date')

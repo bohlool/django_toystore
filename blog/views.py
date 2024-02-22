@@ -1,5 +1,4 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -23,14 +22,14 @@ class PostViewSet(viewsets.ModelViewSet):
     @action(detail=True)
     def comments(self, request, *args, **kwargs):
         post = self.get_object()
-        return Response(CommentSerializer(post.comments.all(), many=True).data)
+        return Response(CommentSerializer(post.comments.filter(is_confirmed=True), many=True).data)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
+    queryset = Comment.objects.filter(is_confirmed=True)
     serializer_class = CommentSerializer
     permission_classes = [IsOwnerOrSuperuser]
     search_fields = ['user__username', 'text']
@@ -48,6 +47,11 @@ class PostListView(ListView):
 class PostDetailView(DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(is_confirmed=True)
+        return context
 
 
 class PostCreateView(LoginRequiredMixin, CreateView):
