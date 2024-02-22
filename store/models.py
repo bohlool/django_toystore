@@ -27,7 +27,9 @@ class Product(TimeStampedModel):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
     is_active = models.BooleanField(default=True)
-    featured_image = models.FileField(upload_to='products/img/featured/')
+    featured_image = models.FileField(blank=True, null=True, upload_to='store/products/img/featured/',
+                                      validators=[
+                                          FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg'])])
 
     def __str__(self):
         return self.name
@@ -35,7 +37,7 @@ class Product(TimeStampedModel):
 
 class ImageGallery(TimeStampedModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.FileField(upload_to='products/img/',
+    image = models.FileField(upload_to='store/products/img/',
                              validators=[FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg'])])
 
     def __str__(self):
@@ -44,7 +46,7 @@ class ImageGallery(TimeStampedModel):
 
 class VideoGallery(TimeStampedModel):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='videos')
-    video = models.FileField(upload_to='products/video/',
+    video = models.FileField(upload_to='store/products/video/',
                              validators=[FileExtensionValidator(allowed_extensions=['mp4'])])
 
     def __str__(self):
