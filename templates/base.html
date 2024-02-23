@@ -23,13 +23,20 @@
                 <a class="nav-link" href="{% url 'post_list' %}">Blog</a>
             </li>
         </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'view-cart' %}">
-                    View Cart <span class="badge">{{ request.session.cart_count }}</span>
-                </a>
-            </li>
-        </ul>
+        {% if request.user.is_authenticated %}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'orders' %}">
+                        View Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'view-cart' %}">
+                        View Cart <span class="badge">{{ request.session.cart_count }}</span>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
     </div>
 </nav>
 

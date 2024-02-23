@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Your Orders</h1>
+    <table class="table table-hover">
+        <thead class="thead-light">
+        <tr>
+            <th>Order ID</th>
+            <th>Subtotal</th>
+            <th>Tax Amount</th>
+            <th>Total</th>
+            <th>Is Paid?</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+            <tr data-toggle="collapse" data-target="#{{ order.order_id }}" class="accordion-toggle">
+                <td>{{ order.order_id }}</td>
+                <td>{{ order.subtotal }}</td>
+                <td>{{ order.tax_amount }}</td>
+                <td>{{ order.total }}</td>
+                <td>{{ order.is_paid|yesno:"Yes,No" }}</td>
+            </tr>
+            <tr>
+                <td colspan="5" class="py-0 border-top-0">
+                    <div id="{{ order.order_id }}" class="accordion-body collapse list-group">
+                        <span>Products included in this order</span>
+                        {% for item in order.cart.items.all %}
+                            <div class="list-group-item my-1 d-flex justify-content-between">
+                                <span>{{ item.product.name }}</span>
+                                <span>{{ item.quantity }}</span>
+                                <span>${{ item.item_price }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="5">No orders found.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
