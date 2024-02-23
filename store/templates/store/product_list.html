@@ -6,10 +6,21 @@
         {% for product in products %}
             <div class="col-md-4 mb-3">
                 <div class="card">
+                    {% if product.featured_image %}
+                        <img class="card-img-top m-auto w-75" src="{{ product.featured_image.url }}"
+                             alt="Product Image">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <a href="{% url 'product-detail' product.id %}" class="btn btn-primary">View Details</a>
+                        <p class="card-text">{{ product.description|safe|truncatewords_html:20 }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <form action="{% url 'add-to-cart' product.id %}" method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" value="1">
+                            <button class="btn btn-success">Add to Cart</button>
+                        </form>
+                        <a href="{% url 'product-detail' product.id %}" class="btn btn-secondary">View Details</a>
                     </div>
                 </div>
             </div>
