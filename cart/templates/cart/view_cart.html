@@ -7,7 +7,7 @@
     </div>
     <div class="row">
         <table class="table">
-            <thead>
+            <thead class="thead-light">
             <tr>
                 <th>Name</th>
                 <th>Quantity</th>
@@ -36,15 +36,15 @@
             </tbody>
             <tfoot>
             <tr>
-                <td>Total</td>
+                <td>Sub Total</td>
                 <td></td>
-                <td>${{ cart.total_price }}</td>
+                <td>${{ cart.subtotal_price }}</td>
                 <td></td>
             </tr>
             </tfoot>
         </table>
-        {% if cart_items|length > 0 %}
-{#            <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>#}
+        {% if cart.items.all %}
+            <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
         {% endif %}
     </div>
 {% endblock content %}
