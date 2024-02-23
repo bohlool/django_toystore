@@ -16,17 +16,9 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in cart_items %}
+            {% for item in cart.items.all %}
                 <tr>
-                    <td>
-                        {{ item.product.name }}
-                        <ul>
-                            {% for  variation in item.variations.all %}
-                                <li>{{ variation.title }}</li>
-                            {% endfor %}
-                        </ul>
-                    </td>
-
+                    <td>{{ item.product.name }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>${{ item.product.price }}</td>
                     <td>
@@ -46,7 +38,7 @@
             <tr>
                 <td>Total</td>
                 <td></td>
-                <td>${{ order_total }}</td>
+                <td>${{ cart.total_price }}</td>
                 <td></td>
             </tr>
             </tfoot>
