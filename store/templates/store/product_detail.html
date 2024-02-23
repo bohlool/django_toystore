@@ -2,23 +2,47 @@
 
 {% block content %}
     <div class="card">
+        {% if product.featured_image %}
+            <img class="card-img-top m-auto w-50" src="{{ product.featured_image.url }}"
+                 alt="Product Image">
+        {% endif %}
         <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text">{{ product.description|safe }}</p>
-            <p class="card-text">Price: {{ product.price }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description|safe }}</p>
+                    <p class="card-text">Price: ${{ product.price }}</p>
+                </div>
+                <div>
+                    <form action="{% url 'add-to-cart' product.id %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="qty">Qty:</label>
+                            <input type="number" id="qty" name="qty" value="1" min="1" class="form-control">
+                        </div>
+                        <button class="btn btn-success">Add to Cart</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
-    <h3>Comments</h3>
+    <div class="d-flex align-items-center justify-content-between mt-4">
+        <h3>Comments</h3>
+        <a href="{% url 'add-comment' product.id %}" class="btn btn-primary">Add Comment</a>
+    </div>
     {% for comment in comments %}
         <div class="card mt-2">
             <div class="card-body">
-                {{ comment.content }}
+                <h6 class="card-subtitle mb-2 text-muted">{{ comment.user }} on {{ comment.created }}</h6>
+                <p class="card-text">{{ comment.content|linebreaks }}</p>
+                {% if request.user.is_superuser or request.user == comment.user %}
+                    <a href="{% url 'comment_delete' post_pk=post.pk comment_pk=comment.pk %}"
+                       class="card-link">Delete comment</a>
+                {% endif %}
             </div>
         </div>
     {% empty %}
         <p>No comments yet.</p>
     {% endfor %}
-
-    <a href="{% url 'add-comment' product.id %}" class="btn btn-primary mt-3">Add Comment</a>
 {% endblock %}

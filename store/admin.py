@@ -5,7 +5,7 @@ from store.models import Category, ImageGallery, Product, VideoGallery, Comment
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'created', 'modified')
     search_fields = ('name',)
 
 
@@ -27,23 +27,25 @@ class VideoGalleryInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     inlines = [CommentInline, ImageGalleryInline, VideoGalleryInline]
-    list_display = ('id', 'name', 'price', 'category')
+    list_display = ('id', 'name', 'price', 'category', 'created', 'modified')
     search_fields = ('name', 'category', 'description')
     list_filter = ('category',)
+    date_hierarchy = 'created'
 
 
 @admin.register(ImageGallery)
 class ImageGalleryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'image')
+    list_display = ('id', 'product', 'image', 'created', 'modified')
 
 
 @admin.register(VideoGallery)
 class VideoGalleryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'video')
+    list_display = ('id', 'product', 'video', 'created', 'modified')
 
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product', 'user', 'content')
+    list_display = ('id', 'product', 'user', 'content', 'created', 'is_confirmed')
     search_fields = ('content',)
-    list_filter = ('product', 'user__username')
+    list_filter = ('product', 'user__username', 'is_confirmed')
+    date_hierarchy = 'created'
