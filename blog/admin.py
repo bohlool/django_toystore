@@ -32,5 +32,5 @@ class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'post', 'user', 'date', 'text', 'is_confirmed')
     list_display_links = ('id', 'post')
     search_fields = ('text',)
-    list_filter = ('user', 'date')
+    list_filter = ('user', 'date', 'is_confirmed')
     date_hierarchy = 'date'
