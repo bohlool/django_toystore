@@ -59,7 +59,7 @@ class CheckoutView(LoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        order = get_object_or_404(Order, user=request.user, pk=int(request.POST.get('id', 0)))
+        order = get_object_or_404(Order, is_paid=False, user=request.user, pk=int(request.POST.get('id', 0)))
         bool_dict = {'true': True, 'false': False, 'True': True, 'False': False}
         is_paid = bool_dict.get(request.POST.get('is_paid', 'false'), False)
 
