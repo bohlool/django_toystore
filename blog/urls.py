@@ -8,7 +8,7 @@ router.register(r'posts', views.PostViewSet)
 router.register(r'comments', views.CommentViewSet)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    path('api/blog/', include(router.urls)),
     path('post/', views.PostListView.as_view(), name='post_list'),
     path('post/<int:pk>/', views.PostDetailView.as_view(), name='post_detail'),
     path('post/new/', views.PostCreateView.as_view(), name='post_create'),

@@ -11,7 +11,7 @@ router.register(r'videogallery', views.VideoGalleryViewSet)
 router.register(r'product-comments', views.CommentViewSet)
 
 urlpatterns = [
-    path('api', include(router.urls)),
+    path('api/', include(router.urls)),
     path('', views.CategoryListView.as_view(), name='store'),
     path('categories/<int:category_id>/products/', views.ProductListView.as_view(), name='product-list-by-category'),
     path('products/<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),

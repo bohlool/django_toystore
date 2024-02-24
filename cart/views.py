@@ -4,9 +4,47 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from store.models import Product
 from .models import Cart, CartItem
+from .serializers import CartSerializer, CartItemSerializer
+
+
+class CartViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Cart.objects.filter(is_ordered=False)
+    serializer_class = CartSerializer
+
+    @action(detail=True)
+    def items(self, request, *args, **kwargs):
+        cart = self.get_object()
+        return Response(CartItemSerializer(cart.items.all(), many=True).data)
+
+
+class CartItemViewSet(viewsets.ModelViewSet):
+    queryset = CartItem.objects.none()
+    serializer_class = CartItemSerializer
+
+    def get_queryset(self):
+        cart = get_user_cart(self.request)
+        return cart.items.all()
+
+    def perform_create(self, serializer):
+        instance = serializer.save(cart=get_user_cart(self.request))
+        update_cart_info(self.request, instance.cart)
+        return instance
+
+    def perform_update(self, serializer):
+        instance = serializer.save(cart=get_user_cart(self.request))
+        update_cart_info(self.request, instance.cart)
+        return instance
+
+    def perform_destroy(self, instance):
+        cart = instance.cart
+        super().perform_destroy(instance)
+        update_cart_info(self.request, cart)
 
 
 def get_user_cart(request):
