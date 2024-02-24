@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.response import Response
 
-from blog.permissions import IsOwnerOrSuperuser
+from blog.permissions import IsOwnerOrSuperuserOrReadonly
 from store.models import Category, Product, Comment, ImageGallery, VideoGallery
 from store.serializers import CategorySerializer, ProductSerializer, ImageGallerySerializer, CommentSerializer, \
     VideoGallerySerializer
@@ -54,7 +54,7 @@ class VideoGalleryViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.filter(is_confirmed=True)
     serializer_class = CommentSerializer
-    permission_classes = [IsOwnerOrSuperuser]
+    permission_classes = [IsOwnerOrSuperuserOrReadonly]
     search_fields = ['user__username', 'text']
 
     def perform_create(self, serializer):

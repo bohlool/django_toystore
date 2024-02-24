@@ -1,7 +1,7 @@
 from rest_framework.permissions import BasePermission
 
 
-class IsOwnerOrSuperuser(BasePermission):
+class IsOwnerOrSuperuserOrReadonly(BasePermission):
     def has_object_permission(self, request, view, obj):
         # Allow GET requests
         if request.method in ['GET']:

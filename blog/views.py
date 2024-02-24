@@ -8,14 +8,14 @@ from rest_framework.response import Response
 
 from .forms import PostForm, CommentForm
 from .models import Post, Comment, Subject
-from .permissions import IsOwnerOrSuperuser
+from .permissions import IsOwnerOrSuperuserOrReadonly
 from .serializers import PostSerializer, CommentSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = [IsOwnerOrSuperuser]
+    permission_classes = [IsOwnerOrSuperuserOrReadonly]
     filterset_fields = ['subject', 'user', 'date']
     search_fields = ['title', 'subject', 'user__username', 'text']
 
@@ -31,7 +31,7 @@ class PostViewSet(viewsets.ModelViewSet):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.filter(is_confirmed=True)
     serializer_class = CommentSerializer
-    permission_classes = [IsOwnerOrSuperuser]
+    permission_classes = [IsOwnerOrSuperuserOrReadonly]
     search_fields = ['user__username', 'text']
 
     def perform_create(self, serializer):
