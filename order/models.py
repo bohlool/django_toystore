@@ -6,14 +6,13 @@ from store.models import TimeStampedModel
 
 User = get_user_model()
 
-ORDER_STATUS = (
-    ('started', 'Started'),
-    ('abandoned', 'Abandoned'),
-    ('finished', 'Finished'),
-)
-
 
 class Order(TimeStampedModel):
+    ORDER_STATUS = (
+        ('started', 'Started'),
+        ('abandoned', 'Abandoned'),
+        ('finished', 'Finished'),
+    )
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='orders')
 
     order_id = models.CharField(unique=True, max_length=120, default='abc')
