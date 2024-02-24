@@ -6,6 +6,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from rest_framework import viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from store.models import Product
@@ -16,6 +17,7 @@ from .serializers import CartSerializer, CartItemSerializer
 class CartViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Cart.objects.filter(is_ordered=False)
     serializer_class = CartSerializer
+    permission_classes = [IsAuthenticated]
 
     @action(detail=True)
     def items(self, request, *args, **kwargs):
@@ -26,6 +28,7 @@ class CartViewSet(viewsets.ReadOnlyModelViewSet):
 class CartItemViewSet(viewsets.ModelViewSet):
     queryset = CartItem.objects.none()
     serializer_class = CartItemSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         cart = get_user_cart(self.request)
