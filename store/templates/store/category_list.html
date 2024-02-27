@@ -6,7 +6,7 @@
 
 {% block content %}
     <h2>Categories</h2>
-    <div class="d-flex justify-content-start align-items-center flex-wrap">
+    <div class="d-flex justify-content-center align-items-center flex-wrap">
         {% for category in categories %}
             <div class="p-3" style="width: 200px;height: 200px;">
                 <a href="{% url 'product-list-by-category' category.id %}"
