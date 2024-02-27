@@ -34,7 +34,6 @@ To execute this app open terminal and change directory to django_toystore then r
 python -m venv venv
 .\venv\Scripts\activate
 pip install -r requirements.txt
-cd myblog
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py runserver
