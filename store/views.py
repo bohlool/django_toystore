@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.response import Response
 
-from blog.permissions import IsOwnerOrSuperuserOrReadonly
+from .permissions import IsOwnerOrSuperuserOrReadonly
 from store.models import Category, Product, Comment, ImageGallery, VideoGallery
 from store.serializers import CategorySerializer, ProductSerializer, ImageGallerySerializer, CommentSerializer, \
     VideoGallerySerializer
