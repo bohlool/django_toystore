@@ -14,7 +14,7 @@ from store.serializers import CategorySerializer, ProductSerializer, ImageGaller
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.filter(is_active=True)
     serializer_class = CategorySerializer
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
@@ -72,6 +72,9 @@ class CategoryListView(ListView):
     template_name = 'store/category_list.html'
     context_object_name = 'categories'
 
+    def get_queryset(self):
+        return Category.objects.filter(is_active=True)
+
 
 class ProductListView(ListView):
     model = Product
@@ -80,7 +83,7 @@ class ProductListView(ListView):
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, id=self.kwargs['category_id'])
-        return Product.objects.filter(category=self.category)
+        return Product.objects.filter(category=self.category, is_active=True)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

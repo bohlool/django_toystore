@@ -5,7 +5,9 @@ from store.models import Category, ImageGallery, Product, VideoGallery, Comment
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title', 'created', 'modified')
+    list_display = ('title', 'is_active', 'created', 'modified')
+    list_filter = ('is_active', 'created', 'modified')
+    list_editable = ('is_active',)
     search_fields = ('title',)
 
 
