@@ -1,6 +1,7 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
@@ -100,7 +101,7 @@ class ProductDetailView(DetailView):
         return context
 
 
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['content']
     template_name = 'store/add_comment.html'
@@ -109,6 +110,15 @@ class CommentCreateView(CreateView):
         form.instance.user = self.request.user
         form.instance.product = get_object_or_404(Product, pk=self.kwargs['product_id'])
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('product-detail', kwargs={'pk': self.kwargs['product_id']})
+
+
+class CommentDeleteView(LoginRequiredMixin, DeleteView):
+    model = Comment
+    pk_url_kwarg = 'comment_pk'
+    template_name = 'confirm_delete.html'
 
     def get_success_url(self):
         return reverse_lazy('product-detail', kwargs={'pk': self.kwargs['product_id']})

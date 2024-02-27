@@ -83,7 +83,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('post_list')
-    template_name = 'blog/confirm_delete.html'
+    template_name = 'confirm_delete.html'
 
 
 class PostsBySubjectView(ListView):
@@ -117,7 +117,7 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comment
     pk_url_kwarg = 'comment_pk'
-    template_name = 'blog/confirm_delete.html'
+    template_name = 'confirm_delete.html'
 
     def get_success_url(self):
         return reverse_lazy('post_detail', kwargs={'pk': self.kwargs['post_pk']})

@@ -16,4 +16,6 @@ urlpatterns = [
     path('categories/<int:category_id>/products/', views.ProductListView.as_view(), name='product-list-by-category'),
     path('products/<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
     path('products/<int:product_id>/comment/', views.CommentCreateView.as_view(), name='add-comment'),
+    path('products/<int:product_id>/comment/<int:comment_pk>/delete/', views.CommentDeleteView.as_view(),
+         name='product_comment_delete'),
 ]
