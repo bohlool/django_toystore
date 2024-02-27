@@ -18,7 +18,7 @@
         </thead>
         <tbody id="accordion">
         {% for order in orders %}
-            <tr data-target="#{{ order.order_id }}" class="accordion-toggle">
+            <tr data-target="#{{ order.order_id }}" class="accordion-toggle" role="button">
                 <td>{{ order.order_id }}</td>
                 <td>{{ order.subtotal }}</td>
                 <td>{{ order.tax_amount }}</td>
@@ -28,7 +28,7 @@
             <tr>
                 <td colspan="5" class="py-0 border-top-0">
                     <div id="{{ order.order_id }}" class="accordion-body collapse list-group" data-parent="#accordion">
-                        <span>Products included in this order</span>
+                        <span>Ordered Products:</span>
                         {% for item in order.cart.items.all %}
                             <div class="list-group-item my-1 d-flex justify-content-between">
                                 <span>Title: {{ item.product.title }}</span>
