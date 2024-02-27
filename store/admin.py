@@ -5,8 +5,8 @@ from store.models import Category, ImageGallery, Product, VideoGallery, Comment
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'created', 'modified')
-    search_fields = ('name',)
+    list_display = ('title', 'created', 'modified')
+    search_fields = ('title',)
 
 
 class CommentInline(admin.TabularInline):
@@ -27,8 +27,8 @@ class VideoGalleryInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     inlines = [CommentInline, ImageGalleryInline, VideoGalleryInline]
-    list_display = ('id', 'name', 'price', 'category', 'created', 'modified')
-    search_fields = ('name', 'category', 'description')
+    list_display = ('id', 'title', 'price', 'category', 'created', 'modified')
+    search_fields = ('title', 'category', 'description')
     list_filter = ('category',)
     date_hierarchy = 'created'
 

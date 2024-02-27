@@ -7,13 +7,13 @@ from store.models import Category, Product, ImageGallery, VideoGallery, Comment
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'name')
+        fields = ('id', 'title')
 
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'name', 'description', 'price', 'category')
+        fields = ('id', 'title', 'description', 'price', 'category')
 
 
 class ImageGallerySerializer(serializers.ModelSerializer):

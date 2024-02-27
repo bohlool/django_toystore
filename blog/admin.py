@@ -5,9 +5,9 @@ from .models import Post, Comment, Subject
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
-    list_display_links = ('id', 'name')
-    search_fields = ('name',)
+    list_display = ('id', 'title')
+    list_display_links = ('id', 'title')
+    search_fields = ('title',)
 
 
 class CommentInlineAdmin(admin.TabularInline):

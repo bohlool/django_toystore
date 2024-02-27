@@ -15,14 +15,14 @@ class TimeStampedModel(models.Model):
 
 
 class Category(TimeStampedModel):
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class Product(TimeStampedModel):
-    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
     description = RichTextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='products')
@@ -32,7 +32,7 @@ class Product(TimeStampedModel):
                                           FileExtensionValidator(allowed_extensions=['jpg', 'jpeg', 'png', 'svg'])])
 
     def __str__(self):
-        return self.name
+        return self.title
 
 
 class ImageGallery(TimeStampedModel):
