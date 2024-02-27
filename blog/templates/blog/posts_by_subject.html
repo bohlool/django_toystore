@@ -1,5 +1,9 @@
 {% extends 'blog/post_list.html' %}
 
+{% block title %}
+    {{ block.super }} - Recent Blog Posts with "{{ subject.title }}" Subject
+{% endblock %}
+
 {% block content_title %}
-    <h3>Recent Blog Posts with "{{ subject.title }}" subject</h3>
+    <h3>Recent Blog Posts with "{{ subject.title }}" Subject</h3>
 {% endblock %}

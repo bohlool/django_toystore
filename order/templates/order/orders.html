@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {{ block.super }} - Your Orders
+{% endblock %}
+
 {% block content %}
     <h1>Your Orders</h1>
     <table class="table table-striped">
@@ -27,9 +31,9 @@
                         <span>Products included in this order</span>
                         {% for item in order.cart.items.all %}
                             <div class="list-group-item my-1 d-flex justify-content-between">
-                                <span>{{ item.product.title }}</span>
-                                <span>{{ item.quantity }}</span>
-                                <span>${{ item.item_price }}</span>
+                                <span>Title: {{ item.product.title }}</span>
+                                <span>Qty: {{ item.quantity }}</span>
+                                <span>Price: ${{ item.item_price }}</span>
                             </div>
                         {% endfor %}
                     </div>

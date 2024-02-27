@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}
+    {{ block.super }} - {{ product.title }}
+{% endblock %}
+
 {% block content %}
     <div class="card">
         {% if product.featured_image %}
@@ -37,7 +41,7 @@
                 <h6 class="card-subtitle mb-2 text-muted">{{ comment.user }} on {{ comment.created }}</h6>
                 <p class="card-text">{{ comment.content|linebreaks }}</p>
                 {% if request.user.is_superuser or request.user == comment.user %}
-                    <a href="{% url 'comment_delete' post_pk=post.pk comment_pk=comment.pk %}"
+                    <a href="{% url 'product_comment_delete' product_id=product.pk comment_pk=comment.pk %}"
                        class="card-link">Delete comment</a>
                 {% endif %}
             </div>
