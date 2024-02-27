@@ -15,9 +15,12 @@ from .serializers import CartSerializer, CartItemSerializer
 
 
 class CartViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Cart.objects.filter(is_ordered=False)
+    queryset = Cart.objects.none()
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Cart.objects.filter(user=self.request.user, is_ordered=False)
 
     @action(detail=True)
     def items(self, request, *args, **kwargs):

@@ -17,6 +17,11 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [DjangoModelPermissionsOrAnonReadOnly]
 
+    @action(detail=True)
+    def products(self, request, *args, **kwargs):
+        category = self.get_object()
+        return Response(ProductSerializer(category.products.filter(is_active=True), many=True).data)
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.filter(is_active=True)

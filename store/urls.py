@@ -6,9 +6,9 @@ from . import views
 router = DefaultRouter()
 router.register(r'categories', views.CategoryViewSet)
 router.register(r'products', views.ProductViewSet)
-router.register(r'imagegallery', views.ImageGalleryViewSet)
-router.register(r'videogallery', views.VideoGalleryViewSet)
-router.register(r'product-comments', views.CommentViewSet)
+router.register(r'image-gallery', views.ImageGalleryViewSet)
+router.register(r'video-gallery', views.VideoGalleryViewSet)
+router.register(r'comments', views.CommentViewSet)
 
 urlpatterns = [
     path('api/', include(router.urls)),
