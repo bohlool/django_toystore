@@ -27,7 +27,7 @@
                         <span>Products included in this order</span>
                         {% for item in order.cart.items.all %}
                             <div class="list-group-item my-1 d-flex justify-content-between">
-                                <span>{{ item.product.name }}</span>
+                                <span>{{ item.product.title }}</span>
                                 <span>{{ item.quantity }}</span>
                                 <span>${{ item.item_price }}</span>
                             </div>
