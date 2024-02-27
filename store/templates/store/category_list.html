@@ -6,11 +6,17 @@
 
 {% block content %}
     <h2>Categories</h2>
-    <div class="list-group">
+    <div class="d-flex justify-content-start align-items-center flex-wrap">
         {% for category in categories %}
-            <a href="{% url 'product-list-by-category' category.id %}" class="list-group-item list-group-item-action">
-                {{ category.title }}
-            </a>
+            <div class="p-3" style="width: 200px;height: 200px;">
+                <a href="{% url 'product-list-by-category' category.id %}"
+                   class="btn btn-light w-100 h-100 rounded-circle border
+                   d-flex justify-content-center align-items-center">
+                    <h6>{{ category.title }}</h6>
+                </a>
+            </div>
+        {% empty %}
+
         {% endfor %}
     </div>
 {% endblock %}
