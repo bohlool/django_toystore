@@ -12,7 +12,7 @@
             <th>Is Paid?</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody id="accordion">
         {% for order in orders %}
             <tr data-toggle="collapse" data-target="#{{ order.order_id }}" class="accordion-toggle">
                 <td>{{ order.order_id }}</td>
@@ -23,7 +23,7 @@
             </tr>
             <tr>
                 <td colspan="5" class="py-0 border-top-0">
-                    <div id="{{ order.order_id }}" class="accordion-body collapse list-group">
+                    <div id="{{ order.order_id }}" class="accordion-body collapse list-group" data-parent="#accordion">
                         <span>Products included in this order</span>
                         {% for item in order.cart.items.all %}
                             <div class="list-group-item my-1 d-flex justify-content-between">
