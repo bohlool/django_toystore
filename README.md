@@ -1,4 +1,4 @@
-Here's a toy store app using Python, django and a sqlite database. We'll use django for the web framework.
+Here's a toy store app using Python, django, bootstrap and a sqlite database. We'll use django for the web framework.
 
 This app has two main parts. One is a blog app and the other is store.
 
